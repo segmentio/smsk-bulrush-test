@@ -6,10 +6,6 @@ services:
     hostname: smsk-bulrush-test
     container_name: smsk-bulrush-test
     command:
-      - "/bin/chamber"
-      - "exec"
-      - "smsk-bulrush-test"
-      - --
       - "/bin/worker"
       - "-debug=false"
       - "-source.connect=localhost:19092"
