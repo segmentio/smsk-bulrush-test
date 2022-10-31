@@ -1,7 +1,7 @@
 version: '3'
 services:
   smsk-bulrush-test:
-    image: 528451384384.dkr.ecr.us-west-2.amazonaws.com/smsk-bulrush-test:0a9a4dc
+    image: 528451384384.dkr.ecr.us-west-2.amazonaws.com/smsk-bulrush-test:<commit>
     restart: always
     hostname: smsk-bulrush-test
     container_name: smsk-bulrush-test
