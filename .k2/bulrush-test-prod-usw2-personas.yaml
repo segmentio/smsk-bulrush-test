@@ -7,7 +7,7 @@ metadata:
 spec:
   targets:
   - name: bulrush-test-prod-usw2-personas
-    cluster: stage:us-west-2:dp-sandbox
+    cluster: production:us-west-2:personas
     replicatedService:
       iamRoleName: smsk-bulrush-test
       namespace: smsk-kafka-test
