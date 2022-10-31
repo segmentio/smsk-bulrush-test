@@ -1,6 +1,44 @@
 env:
-  SEGMENT_CONTEXTS: "ecr,aws-credentials"
-  SEGMENT_BUILDKITE_IMAGE: 'buildkite-agent-golang1.18'
+  SEGMENT_CONTEXTS: "ecr,snyk,aws-credentials"
+  GOPRIVATE: "github.com/segmentio"
+  SEGMENT_BUILDKITE_IMAGE: buildkite-agent-golang1.18
 steps:
-  - label: ":camera_with_flash: Build Image"
-    command: "./build-image.sh"
+  - label: "Vendor and cache dependencies"
+    agents:
+      queue: v1
+    command: "make vendor"
+    plugins:
+      - ssh://git@github.com/segmentio/cache-buildkite-plugin#v3.0.0:
+          key: deps-{{ checksum "go.sum" }}
+          save: true
+          paths:
+            - vendor/
+
+  - wait: ~
+
+  - label: ":lock: Snyk"
+    command: "bk-snyk"
+    agents:
+      queue: v1
+    plugins:
+      - ssh://git@github.com/segmentio/cache-buildkite-plugin#v3.0.0:
+          key: deps-{{ checksum "go.sum" }}
+          paths:
+            - vendor/
+
+  - wait: ~
+
+  - label: ":hammer: Build and Publish"
+    branches: master
+    agents:
+      queue: v1
+    commands: |
+      docker build -t $${TREB_IMAGE_TAG} .
+      docker tag $${TREB_IMAGE_TAG} $${TREB_SHORT_IMAGE_TAG}
+      docker push $${TREB_IMAGE_TAG}
+      treb-publish .run/worker.yml
+    plugins:
+      - ssh://git@github.com/segmentio/cache-buildkite-plugin#v3.0.0:
+          key: deps-{{ checksum "go.sum" }}
+          paths:
+            - vendor
