@@ -1,0 +1,6 @@
+env:
+  SEGMENT_CONTEXTS: "ecr,aws-credentials"
+  SEGMENT_BUILDKITE_IMAGE: 'buildkite-agent-golang1.18'
+steps:
+  - label: ":camera_with_flash: Build Image"
+    command: "./build-image.sh"
