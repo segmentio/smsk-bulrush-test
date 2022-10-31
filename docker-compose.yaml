@@ -1,17 +1,17 @@
 version: '3'
 services:
   smsk-bulrush-test:
-    image: 528451384384.dkr.ecr.us-west-2.amazonaws.com/smsk-bulrush-test:539b96c
+    image: 528451384384.dkr.ecr.us-west-2.amazonaws.com/smsk-bulrush-test:0a9a4dc
     restart: always
     hostname: smsk-bulrush-test
     container_name: smsk-bulrush-test
     command:
       - "/bin/worker"
       - "-debug=false"
-      - "-source.connect=localhost:19092"
+      - "-source.connect=kafka-1"
       - "-source.group-id=bulrush-test-cg-1"
       - "-source.topic=test-1"
-      - "-sink.connect=localhost:19092"
+      - "-sink.connect=kafka-1"
       - "-output-topic=test-2"
       - "-address=:3000"
     ports:

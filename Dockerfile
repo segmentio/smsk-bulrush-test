@@ -20,6 +20,3 @@ COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certifi
 # force the go resolver instead of the cgo resolver.  otherwise, address resolution breaks
 # for the .local domain
 ENV GODEBUG netdns=go
-
-# entry
-ENTRYPOINT ["/bin/worker"]
