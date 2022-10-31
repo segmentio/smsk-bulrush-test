@@ -23,4 +23,5 @@ COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certifi
 # for the .local domain
 ENV GODEBUG netdns=go
 
+# entry
 ENTRYPOINT ["/bin/chamber", "exec", "smsk-bulrush-test", "--", "/bin/worker"]
