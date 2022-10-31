@@ -29,6 +29,7 @@ steps:
   - wait: ~
 
   - label: ":hammer: Build and Publish"
+    branches: master
     agents:
       queue: v1
     commands: |
