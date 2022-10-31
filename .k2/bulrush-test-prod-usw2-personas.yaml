@@ -1,0 +1,36 @@
+apiVersion: platform.segment.com/v1alpha1
+kind: SegmentApplicationExperimental
+cell: core
+metadata:
+  name: smsk-bulrush-test
+  namespace: smsk-kafka-test
+spec:
+  targets:
+  - name: bulrush-test-prod-usw2-personas
+    cluster: stage:us-west-2:dp-sandbox
+    replicatedService:
+      iamRoleName: smsk-bulrush-test
+      namespace: smsk-kafka-test
+      replicas: 1
+      mainContainer:
+        imageName: smsk-bulrush-test
+        imageRegistry: 528451384384.dkr.ecr.us-west-2.amazonaws.com
+        command:
+        - "/bin/worker"
+        - "-debug=false"
+        - "-source.connect=kafka-kafka-personas.personas.segment.local:9092"
+        - "-source.group-id=bulrush-test-cg-1"
+        - "-source.topic=test-1"
+        - "-sink.connect=kafka-kafka-personas.personas.segment.local:9092"
+        - "-output-topic=test-2"
+        - "-address=:3000"
+        resources:
+          limits:
+            cpu: 0.25
+            memory: 256M
+        ctlstore:
+          disabled: true
+        ports:
+          - name: http
+            containerPort: 3000
+        healthCheckPath: "/internal/health"
