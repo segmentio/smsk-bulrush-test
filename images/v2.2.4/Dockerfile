@@ -9,7 +9,7 @@ RUN export ENV GO111MODULE=on && \
     export GOPRIVATE=github.com/segment*
 RUN go build \
   -o /go/run/worker \
-  -a ./cmd/worker
+  -a cmd/worker
 
 FROM 528451384384.dkr.ecr.us-west-2.amazonaws.com/segment-alpine
 COPY --from=builder /go/run/worker /
