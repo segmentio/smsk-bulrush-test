@@ -1,0 +1,27 @@
+version: '3'
+services:
+  smsk-bulrush-test:
+    image: 528451384384.dkr.ecr.us-west-2.amazonaws.com/smsk-bulrush-test:539b96c
+    restart: always
+    hostname: smsk-bulrush-test
+    container_name: smsk-bulrush-test
+    command:
+      - "/bin/chamber"
+      - "exec"
+      - "smsk-bulrush-test"
+      - --
+      - "/bin/worker"
+      - "-debug=false"
+      - "-source.connect=localhost:19092"
+      - "-source.group-id=bulrush-test-cg-1"
+      - "-source.topic=test-1"
+      - "-sink.connect=localhost:19092"
+      - "-output-topic=test-2"
+      - "-address=:3000"
+    ports:
+      - 3000:3000
+    deploy:
+      resources:
+        limits:
+          cpus: '0.5'
+          memory: 256M

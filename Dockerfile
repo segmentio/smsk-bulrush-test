@@ -1,4 +1,3 @@
-FROM segment/chamber:2 as chamber
 FROM golang:1.18 as builder
 
 RUN apt-get update && apt-get install --no-install-recommends -y \
@@ -15,7 +14,6 @@ RUN make install
 
 FROM 528451384384.dkr.ecr.us-west-2.amazonaws.com/segment-alpine
 
-COPY --from=chamber /chamber /bin/chamber
 COPY --from=builder /go/bin/worker /bin/worker
 COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certificates.crt
 
@@ -24,4 +22,4 @@ COPY --from=builder /etc/ssl/certs/ca-certificates.crt /etc/ssl/certs/ca-certifi
 ENV GODEBUG netdns=go
 
 # entry
-ENTRYPOINT ["/bin/chamber", "exec", "smsk-bulrush-test", "--", "/bin/worker"]
+ENTRYPOINT ["/bin/worker"]
