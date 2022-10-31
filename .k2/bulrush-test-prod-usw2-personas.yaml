@@ -11,7 +11,7 @@ spec:
     replicatedService:
       iamRoleName: smsk-bulrush-test
       namespace: smsk-kafka-test
-      replicas: 1
+      replicas: 5
       mainContainer:
         imageName: smsk-bulrush-test
         imageRegistry: 528451384384.dkr.ecr.us-west-2.amazonaws.com
@@ -26,7 +26,7 @@ spec:
         - "-address=:3000"
         resources:
           limits:
-            cpu: 0.25
+            cpu: 1
             memory: 256M
         ctlstore:
           disabled: true
