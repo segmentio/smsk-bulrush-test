@@ -1,18 +1,18 @@
-# deploy - k2 deploy app bulrush-stage-usw2-dp-sandbox -t smsk-bulrush-test -b <build> --argocd --skip-checks
-# delete - k2 delete app bulrush-stage-usw2-dp-sandbox -t smsk-bulrush-test
+# deploy - k2 deploy app bulrush-msk-stage-usw2-dp-sandbox -t msk-bulrush-test -b <build> --argocd --skip-checks
+# delete - k2 delete app bulrush-msk-stage-usw2-dp-sandbox -t msk-bulrush-test
 apiVersion: platform.segment.com/v1alpha1
 kind: SegmentApplicationExperimental
 cell: core
 metadata:
-  name: smsk-bulrush-test
-  namespace: smsk-kafka-load
+  name: msk-bulrush-test
+  namespace: msk-kafka-load
 spec:
   targets:
-  - name: smsk-bulrush-test
+  - name: msk-bulrush-test
     cluster: stage:us-west-2:dp-sandbox
     replicatedService:
-      iamRoleName: smsk-bulrush-test
-      namespace: smsk-kafka-load
+      iamRoleName: msk-bulrush-test
+      namespace: msk-kafka-load
       replicas: 1
       mainContainer:
         imageName: smsk-bulrush-test
@@ -20,11 +20,11 @@ spec:
         command:
         - "/bin/worker"
         - "-debug=false"
-        - "-source.connect=kafka-kafka.dp-sandbox.segment.local:9092"
+        - "-source.connect=kafka.dataplatform.segment.local:9092"
         - "-source.group-id=bulrush-test-cg-1"
-        - "-source.topic=test-1"
-        - "-sink.connect=kafka-kafka.dp-sandbox.segment.local:9092"
-        - "-output-topic=test-2"
+        - "-source.topic=dp-test-onboarding"
+        - "-sink.connect=kafka.dataplatform.segment.local:9092"
+        - "-output-topic=dp-test-identified-messages"
         - "-address=:3000"
         resources:
           limits:
